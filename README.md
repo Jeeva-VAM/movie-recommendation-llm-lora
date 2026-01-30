@@ -30,6 +30,26 @@ IMDb CSV → Prompt Builder → Tokenizer → TinyLlama (Frozen) → LoRA Adapte
 - ###Question: Recommend a science fiction movie with a twist.
   ###Answer: "The Martian" (2015) - A film about an astronaut stranded on Mars who must use his ingenuity and resourcefulness to survive. The twist is that the astronaut's wife was killed in a tragic accident before he left Earth, and he had to make his way back to Earth alone. This movie is a great example of how a twist can add depth and complexity to a story.
 
+## How to Load the Fine-Tuned Adapter
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
+
+base = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+
+tokenizer = AutoTokenizer.from_pretrained(base)
+
+base_model = AutoModelForCausalLM.from_pretrained(
+    base,
+    load_in_4bit=True,
+    device_map="auto"
+)
+
+model = PeftModel.from_pretrained(
+    base_model,
+    "PATH_TO_ADAPTER"
+)
 
 ## Limitations
 - Not fact-perfect (LLM hallucinations)
